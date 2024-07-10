@@ -360,7 +360,7 @@ class MVMOO(MVO):
             fmax = np.amax(fvals)
             indymax = np.argmax(fvals)
             xmax = Xsamples[indymax,:]
-            qual = xmax[-self.num_qual:]
+            qual = xmax[self.num_quant:]
 
             bnd = list(self.bounds[:,:self.num_quant].T)
             bndlist = []
@@ -368,7 +368,7 @@ class MVMOO(MVO):
             for element in bnd:
                 bndlist.append(tuple(element))
 
-            result = stats.optimize.minimize(self.EIMoptimiserWrapper, xmax[:-self.num_qual].reshape(-1), args=(qual,constraints,mode), bounds=bndlist,method='SLSQP')
+            result = stats.optimize.minimize(self.EIMoptimiserWrapper, xmax[:self.num_quant].reshape(-1), args=(qual,constraints,mode), bounds=bndlist,method='SLSQP')
             if values is None:
                 
                 return result.fun, np.concatenate((result.x, qual),axis=None)
